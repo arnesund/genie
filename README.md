@@ -1,2 +1,5 @@
-# genie
-Smart Task Management App for Procrastinators
+# Genie
+
+A GPT-powered Task Management App for Procrastinators
+
+## TODO: Write README xD
