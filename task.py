@@ -92,7 +92,7 @@ def get_all_tasks() -> list:
 
 
 @st.cache_data(ttl=60)
-def get_all_tasks_as_text() -> str:
+def get_all_tasks_as_text(not_used: str) -> str:
     """Get all tasks and format them as a text object for easy use by LLM"""
     res = ""
     for t in get_all_tasks():
