@@ -57,11 +57,11 @@ class Task:
             current_values = self.sheet.row_values(self.row)
             if current_values[0] != self.description:
                 self.sheet.update_cell(self.row, 1, self.description)
-            if current_values[1] != self.category:
+            if len(current_values) == 1 or (len(current_values) > 1 and current_values[1] != self.category):
                 self.sheet.update_cell(self.row, 2, self.category)
-            if current_values[2] != self.priority:
+            if len(current_values) == 2 or (len(current_values) > 2 and current_values[2] != self.priority):
                 self.sheet.update_cell(self.row, 3, self.priority)
-            if current_values[3] != self.deadline:
+            if len(current_values) == 3 or (len(current_values) > 3 and current_values[3] != self.deadline):
                 self.sheet.update_cell(self.row, 4, self.deadline)
         else:
             # Add task
