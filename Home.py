@@ -15,7 +15,7 @@ from task import Task, get_all_tasks_as_text, change_priority
 #
 # Tool functions
 #
-def add_task(description: str):
+def add_task(description: str) -> str:
     t = Task(description=description)
     t.save()
     return f"Added new task to the list: {description}"
@@ -34,22 +34,22 @@ memory = ConversationBufferMemory(memory_key="memory", return_messages=True)
 # Initialize list of tools
 #
 tools = [
-    # Tool.from_function(
-    #     func=llm.predict,
-    #     name="Ask the oracle",
-    #     description="useful for when you don't know where to find the answer",
-    # ),
-    Tool.from_function(
+    StructuredTool.from_function(
+        func=llm.predict,
+        name="Ask the oracle",
+        description="useful for when you don't know where to find the answer",
+    ),
+    StructuredTool.from_function(
         func=search.run,
         name="Search",
         description="useful for when you need to answer questions about current events or consult documentation for a given product",
     ),
-    Tool.from_function(
+    StructuredTool.from_function(
         func=get_all_tasks_as_text,
         name="Get all tasks",
-        description="useful for when you need to get all the tasks in the tasklist"
+        description="useful for when you need to get all the tasks in the tasklist with details about priority, deadline and task type"
     ),
-    Tool.from_function(
+    StructuredTool.from_function(
         func=add_task,
         name="Add new task",
         description="useful for when you need to add a new task to the tasklist, but only if the task does not exist already",

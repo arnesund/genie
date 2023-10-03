@@ -53,9 +53,16 @@ class Task:
         # Find the current row, might have changed since last lookup
         self.find_row()
         if self.row:
-            # Update existing row
-            st.write(f"About to update row {self.row}")
-            #self.sheet.update(self.row, self.description, ...)
+            # Update the values that have changed
+            current_values = self.sheet.row_values(self.row)
+            if current_values[0] != self.description:
+                self.sheet.update_cell(self.row, 1, self.description)
+            if current_values[1] != self.category:
+                self.sheet.update_cell(self.row, 2, self.category)
+            if current_values[2] != self.priority:
+                self.sheet.update_cell(self.row, 3, self.priority)
+            if current_values[3] != self.deadline:
+                self.sheet.update_cell(self.row, 4, self.deadline)
         else:
             # Add task
             self.sheet.insert_rows([[
@@ -67,7 +74,7 @@ class Task:
 
 
 @st.cache_data(ttl=60)
-def get_all_tasks():
+def get_all_tasks() -> list:
     """Fetch spreadsheet and parse it into a list of Task objects"""
     current_tasks = []
     sheet = get_worksheet()
@@ -85,7 +92,7 @@ def get_all_tasks():
 
 
 @st.cache_data(ttl=60)
-def get_all_tasks_as_text(_):
+def get_all_tasks_as_text() -> str:
     """Get all tasks and format them as a text object for easy use by LLM"""
     res = ""
     for t in get_all_tasks():
@@ -100,7 +107,7 @@ def get_all_tasks_as_text(_):
     return res
 
 
-def get_task_by_description(description) -> Task:
+def get_task_by_description(description: str) -> Task:
     """Search the task list for a task by description, return Task object or None"""
     for t in get_all_tasks():
         if t["description"] == description:
@@ -108,7 +115,7 @@ def get_task_by_description(description) -> Task:
     return None
 
 
-def change_priority(description: str, priority: int):
+def change_priority(description: str, priority: int) -> str:
     """Update the priority for a task by description"""
     t = get_task_by_description(description)
     if t:
