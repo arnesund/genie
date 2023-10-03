@@ -12,6 +12,7 @@ pyparsing = "*"
 gspread = "*"
 oauth2client = "*"
 pandas = "*"
+google-search-results = "*"
 
 [dev-packages]
 
